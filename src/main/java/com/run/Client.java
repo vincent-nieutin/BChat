@@ -6,6 +6,6 @@ import com.view.LoginView;
 public class Client {
 
 	public static void main(String[] args) {
-		new LoginController(new LoginView());
+		new LoginController();
 	}
 }

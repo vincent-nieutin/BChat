@@ -12,7 +12,6 @@ import java.net.UnknownHostException;
 
 import com.model.ServerSettingsModel;
 import com.model.SettingsModel;
-import com.view.ChatView;
 import com.view.ErrorView;
 import com.view.LoginView;
 
@@ -21,17 +20,24 @@ public class LoginController {
 	private SettingsModel settingsModel;
 	private ServerSettingsController serverSettingsController;
 	private ServerSettingsModel serverSettingsModel;
+	private XmlFileController xmlFileController;
 	
 	private Socket clientSocket;
 	private PrintWriter outputStream;
 	private BufferedReader inputStream;
 	
-	public LoginController(LoginView loginView) {
-		this.loginView = loginView;
+	public LoginController() {
+		xmlFileController = new XmlFileController();
+		settingsModel = xmlFileController.getSettings();
+		
+		loginView = new LoginView(settingsModel.getUsername());
 		this.loginView.addConnectButtonListener(new ConnectButtonListener());
 		this.loginView.addSettingsButtonListener(new SettingsButtonListener());
 		
-		serverSettingsController = new ServerSettingsController();
+		serverSettingsModel = new ServerSettingsModel();
+		serverSettingsModel.setServer(settingsModel.getServer());
+		serverSettingsModel.setPort(settingsModel.getPort());
+		serverSettingsController = new ServerSettingsController(serverSettingsModel);
 	}
 	
 	public void startChat() {
@@ -61,7 +67,7 @@ public class LoginController {
 			new RuntimeException("IO exception", e);
 			return;
 		}
-		
+		xmlFileController.saveSettings(settingsModel);
 		new ChatController(this.settingsModel, clientSocket, inputStream, outputStream);
 		
 		loginView.setVisible(false);

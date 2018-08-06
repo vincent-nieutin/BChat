@@ -11,11 +11,11 @@ public class ServerSettingsController {
 	private ServerSettingsView serverSettingsView;
 	private ServerSettingsModel serverSettingsModel;
 	
-	public ServerSettingsController() {
+	public ServerSettingsController(ServerSettingsModel serverSettingsModel) {
+		this.serverSettingsModel = serverSettingsModel;
 		serverSettingsView = new ServerSettingsView();
 		serverSettingsView.addOkButtonListener(new OkButtonListener());
 		serverSettingsView.addCancelButtonListener(new CancelButtonListener());
-		serverSettingsModel = new ServerSettingsModel();
 	}
 	
 	public ServerSettingsModel getServerSettings() {

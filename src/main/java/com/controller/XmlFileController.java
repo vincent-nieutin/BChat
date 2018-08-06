@@ -1,21 +1,30 @@
 package com.controller;
 
-import java.io.*;
+import java.io.File;
 
-import javax.xml.parsers.*;
-import javax.xml.transform.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
-import com.run.Client;
+import com.model.SettingsModel;
 
 public class XmlFileController {
 	private static String FILE = "src/main/ressources/settings.xml";
 	private File settingsFile = new File(FILE);
-	
-	public void getSettings() {
+
+	public SettingsModel getSettings() {
+		SettingsModel settingsModel = new SettingsModel();
+		String username = null;
+		String server = "localhost";
+		int port = 6666;
+
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -23,30 +32,46 @@ public class XmlFileController {
 			
 			doc.getDocumentElement().normalize();
 			
-			String username = doc.getElementsByTagName("username").item(0).getTextContent();
-			String server = doc.getElementsByTagName("server").item(0).getTextContent();
-			int port = Integer.parseInt(doc.getElementsByTagName("port").item(0).getTextContent());
-			
-			System.out.println("Username: " + username);
-			System.out.println("Server: " + server);
-			System.out.println("Port: " + port);
-			
-		}catch(Exception e){
+			username = doc.getElementsByTagName("username").item(0).getTextContent();
+			server = doc.getElementsByTagName("server").item(0).getTextContent();
+			port = Integer.parseInt(doc.getElementsByTagName("port").item(0).getTextContent());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		settingsModel.setServer(server);
+		settingsModel.setPort(port);
+		settingsModel.setUsername(username);
+
+		return settingsModel;
 	}
 	
-	public void setSettings(String username, String server, int port) {
+	public void saveSettings(SettingsModel settingsModel) {
+		DocumentBuilderFactory dbFactory;
+		DocumentBuilder dBuilder;
+		Document doc;
+		
 		try {
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(settingsFile);
+			dbFactory = DocumentBuilderFactory.newInstance();
+			dBuilder = dbFactory.newDocumentBuilder();
+			doc = dBuilder.newDocument();
+			
+			Element rootElement = doc.createElement("settings");
+			doc.appendChild(rootElement);
+			
+			Element usernameNode = doc.createElement("username");
+			usernameNode.appendChild(doc.createTextNode(settingsModel.getUsername()));
+			rootElement.appendChild(usernameNode);
+			
+			
+			Element serverNode = doc.createElement("server");
+			serverNode.appendChild(doc.createTextNode(settingsModel.getServer()));
+			rootElement.appendChild(serverNode);
+			
+			Element portNode = doc.createElement("port");
+			portNode.appendChild(doc.createTextNode(Integer.toString(settingsModel.getPort())));
+			rootElement.appendChild(portNode);
 			
 			doc.getDocumentElement().normalize();
-			
-			doc.getElementsByTagName("username").item(0).setTextContent(username);
-			doc.getElementsByTagName("server").item(0).setTextContent(server);
-			doc.getElementsByTagName("port").item(0).setTextContent(Integer.toString(port));
 			
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
@@ -55,7 +80,7 @@ public class XmlFileController {
 			
 			transformer.transform(source, result);
 			
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
