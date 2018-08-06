@@ -1,6 +1,6 @@
 package com.model;
 
-public class ConnectionSettingsModel {
+public class ServerSettingsModel {
 	private String server = "localhost";
 	private int port = 6666;
 	

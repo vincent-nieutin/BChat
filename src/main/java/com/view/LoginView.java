@@ -1,13 +1,17 @@
 package com.view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -15,62 +19,84 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
+import com.controller.ServerSettingsController;
 import com.gui.Button;
 import com.gui.InputField;
 import com.gui.InputSpinner;
 import com.gui.Label;
 import com.model.SettingsModel;
 
+@SuppressWarnings("serial")
 public class LoginView extends DefaultView {
 	
-	protected static int WINDOW_WIDTH = 300;
-	protected static int WINDOW_HEIGHT = 200;
+	protected static int WINDOW_WIDTH = 400;
+	protected static int WINDOW_HEIGHT = 300;
 	private static String WINDOW_NAME = "Connection";
 	
 	private InputField usernameField;
-	private Button connectButton;
-
-	// Initial config
+	private Button connectButton, settingsButton;
+	
 	private String username = "Guest" + new Random().nextInt(99);
-
+	
 	public LoginView() {
 		super(WINDOW_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
+		usernameField.setText(username);
 	}
 	
 	@Override
 	protected void build() {
+		
+		JPanel contentPanel = new JPanel();
+		contentPanel.setLayout(new BoxLayout(contentPanel,BoxLayout.Y_AXIS));
+		
+		//Banner panel
+		JPanel bannerPanel = new JPanel();
+		bannerPanel.setLayout(new FlowLayout(FlowLayout.TRAILING));
+		bannerPanel.setPreferredSize(new Dimension(WINDOW_WIDTH,30));
+		bannerPanel.setBackground(new Color(0,115,230));
+		
+		//Server settings button
+		settingsButton = new Button("Server settings");
+		settingsButton.setPreferredSize(new Dimension(108,20));
+		settingsButton.setFont(new Font("Tahoma", Font.CENTER_BASELINE, 10));
+		bannerPanel.add(settingsButton);
+		
+		contentPanel.add(bannerPanel);
+		
+		//Main Panel
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		
+		//GBC initial settings
+		gbc.insets = new Insets(0, 0, 0, 0);
 		gbc.fill = GridBagConstraints.VERTICAL;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-
+		
+		
 		// Username label
-		gbc.gridx--;
-		gbc.gridy++;
+		gbc.gridx = 0;
+		gbc.gridy = 1;
 		gbc.insets = new Insets(20, 0, 0, 0);
 		Label usernameLabel = new Label("Username");
 		mainPanel.add(usernameLabel, gbc);
 
-		gbc.insets = new Insets(0, 0, 0, 0);
-
 		// Username field
 		gbc.gridx = 0;
-		gbc.gridy++;
-		usernameField = new InputField(username);
+		gbc.gridy = 2;
+		usernameField = new InputField("");
 		usernameField.setPreferredSize(new Dimension(200, 25));
 		mainPanel.add(usernameField, gbc);
 
 		// Connect button
 		gbc.gridx = 0;
-		gbc.gridy++;
+		gbc.gridy = 3;
 		gbc.insets = new Insets(20, 0, 0, 0);
 		connectButton = new Button("Connect");
 		mainPanel.add(connectButton, gbc);
-
-		this.add(mainPanel);
+		
+		contentPanel.add(mainPanel);
+		
+		this.add(contentPanel);
 	}
 
 	public SettingsModel getSettings() {
@@ -87,7 +113,11 @@ public class LoginView extends DefaultView {
 		return settingsModel;
 	}
 
-	public void addConnectListener(ActionListener connect) {
-		connectButton.addActionListener(connect);
+	public void addConnectButtonListener(ActionListener connectButtonListener) {
+		connectButton.addActionListener(connectButtonListener);
+	}
+	
+	public void addSettingsButtonListener(ActionListener settingsButtonListener) {
+		settingsButton.addActionListener(settingsButtonListener);
 	}
 }

@@ -14,10 +14,10 @@ import com.gui.Button;
 import com.gui.InputField;
 import com.gui.InputSpinner;
 import com.gui.Label;
-import com.model.ConnectionSettingsModel;
+import com.model.ServerSettingsModel;
 
 @SuppressWarnings("serial")
-public class ConnectionSettingsView extends DefaultView {
+public class ServerSettingsView extends DefaultView {
 
 	protected static int WINDOW_WIDTH = 300;
 	protected static int WINDOW_HEIGHT = 200;
@@ -30,7 +30,7 @@ public class ConnectionSettingsView extends DefaultView {
 	private String server = "localhost";
 	private int port = 6666;
 
-	public ConnectionSettingsView() {
+	public ServerSettingsView() {
 		super(WINDOW_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
 		setServer(this.server);
 		setPort(this.port);
@@ -91,8 +91,8 @@ public class ConnectionSettingsView extends DefaultView {
 		this.add(mainPanel);
 	}
 
-	public ConnectionSettingsModel getConnectionSettings() {
-		ConnectionSettingsModel settingsModel = new ConnectionSettingsModel();
+	public ServerSettingsModel getServerSettings() {
+		ServerSettingsModel settingsModel = new ServerSettingsModel();
 		settingsModel.setServer(getServer());
 		settingsModel.setPort(getPort());
 		return settingsModel;

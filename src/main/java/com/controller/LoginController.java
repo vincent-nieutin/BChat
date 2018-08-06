@@ -10,32 +10,39 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import com.model.ServerSettingsModel;
 import com.model.SettingsModel;
 import com.view.ChatView;
 import com.view.ErrorView;
 import com.view.LoginView;
 
 public class LoginController {
-	private LoginView connexionView;
+	private LoginView loginView;
 	private SettingsModel settingsModel;
-	private ChatController chatController;
+	private ServerSettingsController serverSettingsController;
+	private ServerSettingsModel serverSettingsModel;
+	
 	private Socket clientSocket;
 	private PrintWriter outputStream;
 	private BufferedReader inputStream;
 	
-	public LoginController(LoginView connexionView) {
-		this.connexionView = connexionView;
-
-		this.connexionView.addConnectListener(new ConnexionListener());
+	public LoginController(LoginView loginView) {
+		this.loginView = loginView;
+		this.loginView.addConnectButtonListener(new ConnectButtonListener());
+		this.loginView.addSettingsButtonListener(new SettingsButtonListener());
+		
+		serverSettingsController = new ServerSettingsController();
 	}
 	
 	public void startChat() {
-		SettingsModel settingsModel = connexionView.getSettings();
+		serverSettingsModel = serverSettingsController.getServerSettings();
+		settingsModel = loginView.getSettings();
 		if (settingsModel == null) {
 			return;
 		}
 		
-		this.settingsModel = settingsModel;		
+		settingsModel.setServer(serverSettingsModel.getServer());
+		settingsModel.setPort(serverSettingsModel.getPort());
 		
 		try {
 			clientSocket = new Socket(settingsModel.getServer(), settingsModel.getPort());
@@ -55,16 +62,25 @@ public class LoginController {
 			return;
 		}
 		
-		chatController = new ChatController(this.settingsModel, clientSocket, inputStream, outputStream);
+		new ChatController(this.settingsModel, clientSocket, inputStream, outputStream);
 		
-		connexionView.setVisible(false);
+		loginView.setVisible(false);
 	}
 	
-	class ConnexionListener implements ActionListener {
+	class ConnectButtonListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			startChat();
+		}
+
+	}
+	
+	class SettingsButtonListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			serverSettingsController.showServerSettingsView();;
 		}
 
 	}
