@@ -1,5 +1,6 @@
 package com.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -20,82 +21,31 @@ import com.gui.InputSpinner;
 import com.gui.Label;
 import com.model.SettingsModel;
 
-public class LoginView extends JFrame {
-
-	private static int windowWidth = 300;
-	private static int windowHeight = 300;
-
-	private InputField serverField;
-	private InputSpinner portField;
+public class LoginView extends DefaultView {
+	
+	protected static int WINDOW_WIDTH = 300;
+	protected static int WINDOW_HEIGHT = 200;
+	private static String WINDOW_NAME = "Connection";
+	
 	private InputField usernameField;
 	private Button connectButton;
 
 	// Initial config
-	private String server = "localhost";
-	private int port = 6666;
 	private String username = "Guest" + new Random().nextInt(99);
-	private ErrorView errorView;
 
 	public LoginView() {
-		super("Connect");
-
-		this.setSize(windowWidth, windowHeight);
-		this.setLocationRelativeTo(null);
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		build();
-		this.setVisible(true);
+		super(WINDOW_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
-
-	private void build() {
+	
+	@Override
+	protected void build() {
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		
-		JPanel decorativePanel = new JPanel();
-		decorativePanel.setBackground();
-		this.add(decorativePanel);
-
 		gbc.fill = GridBagConstraints.VERTICAL;
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-
-		// Server label
-		Label serverLabel = new Label("Server");
-		mainPanel.add(serverLabel, gbc);
-
-		// Server field
-		gbc.gridy++;
-		serverField = new InputField(server);
-		serverField.setPreferredSize(new Dimension(200, 25));
-		mainPanel.add(serverField, gbc);
-
-		// Port label
-		gbc.gridy++;
-		Label portLabel = new Label("Port");
-		mainPanel.add(portLabel, gbc);
-
-		// Port field
-		gbc.gridy++;
-		portField = new InputSpinner(port, 0, 65535, 1);
-		portField.setEditor(new JSpinner.NumberEditor(portField, "#"));
-		portField.setBorder(new EmptyBorder(0, 1, 0, 0));
-		portField.setPreferredSize(new Dimension(55, 25));
-		mainPanel.add(portField, gbc);
 
 		// Username label
 		gbc.gridx--;
@@ -118,7 +68,6 @@ public class LoginView extends JFrame {
 		gbc.gridy++;
 		gbc.insets = new Insets(20, 0, 0, 0);
 		connectButton = new Button("Connect");
-		connectButton.setPreferredSize(new Dimension(90, 30));
 		mainPanel.add(connectButton, gbc);
 
 		this.add(mainPanel);
@@ -127,18 +76,8 @@ public class LoginView extends JFrame {
 	public SettingsModel getSettings() {
 		SettingsModel settingsModel = new SettingsModel();
 		
-		String server = serverField.getText();
-		int port = (Integer) portField.getValue();
 		String username = usernameField.getText();
 		
-		if (server.equals("")) {
-			errorView = new ErrorView("No server specified", "Please fill the server field.");
-			return null;
-		}
-		settingsModel.setServer(server);
-		
-		settingsModel.setPort(port);
-
 		if (username.equals("")) {
 			errorView = new ErrorView("No username specified", "Please fill the username field.");
 			return null;
