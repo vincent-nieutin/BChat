@@ -4,11 +4,12 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+@SuppressWarnings("serial")
 public class DefaultView extends JFrame{
 	
 	protected static ErrorView errorView;
 	
-	public DefaultView(String WindowName, int width, int height) {
+	public DefaultView(String WindowName, int width, int height, boolean isVisible) {
 		super(WindowName);	
 		this.setSize(width,height);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -30,7 +31,11 @@ public class DefaultView extends JFrame{
 			e.printStackTrace();
 		}
 		build();
-		this.setVisible(true);
+		this.setVisible(isVisible);
+	}
+	
+	public DefaultView(String WindowName, int width, int height) {
+		this(WindowName, width, height, true);
 	}
 	
 	protected void build() {

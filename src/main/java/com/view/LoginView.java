@@ -30,7 +30,7 @@ import com.model.SettingsModel;
 public class LoginView extends DefaultView {
 	
 	protected static int WINDOW_WIDTH = 400;
-	protected static int WINDOW_HEIGHT = 300;
+	protected static int WINDOW_HEIGHT = 230;
 	private static String WINDOW_NAME = "Connection";
 	
 	private InputField usernameField;
@@ -57,8 +57,8 @@ public class LoginView extends DefaultView {
 		
 		//Server settings button
 		settingsButton = new Button("Server settings");
-		settingsButton.setPreferredSize(new Dimension(108,20));
-		settingsButton.setFont(new Font("Tahoma", Font.CENTER_BASELINE, 10));
+		settingsButton.setPreferredSize(new Dimension(119,20));
+		settingsButton.setFont(new Font("Tahoma", Font.CENTER_BASELINE, 11));
 		bannerPanel.add(settingsButton);
 		
 		contentPanel.add(bannerPanel);

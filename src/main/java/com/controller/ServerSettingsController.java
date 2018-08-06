@@ -13,7 +13,6 @@ public class ServerSettingsController {
 	
 	public ServerSettingsController() {
 		serverSettingsView = new ServerSettingsView();
-		hideServerSettingsView();
 		serverSettingsView.addOkButtonListener(new OkButtonListener());
 		serverSettingsView.addCancelButtonListener(new CancelButtonListener());
 		serverSettingsModel = new ServerSettingsModel();
@@ -45,6 +44,8 @@ public class ServerSettingsController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			serverSettingsView.dispose();
+			serverSettingsView.setServer(serverSettingsModel.getServer());
+			serverSettingsView.setPort(serverSettingsModel.getPort());
 		}
 		
 	}

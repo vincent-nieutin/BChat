@@ -31,7 +31,8 @@ public class ServerSettingsView extends DefaultView {
 	private int port = 6666;
 
 	public ServerSettingsView() {
-		super(WINDOW_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
+		super(WINDOW_NAME, WINDOW_WIDTH, WINDOW_HEIGHT, false);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setServer(this.server);
 		setPort(this.port);
 	}
@@ -90,7 +91,7 @@ public class ServerSettingsView extends DefaultView {
 
 		this.add(mainPanel);
 	}
-
+	
 	public ServerSettingsModel getServerSettings() {
 		ServerSettingsModel settingsModel = new ServerSettingsModel();
 		settingsModel.setServer(getServer());

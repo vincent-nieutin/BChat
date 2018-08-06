@@ -37,7 +37,7 @@ public class LoginController {
 	public void startChat() {
 		serverSettingsModel = serverSettingsController.getServerSettings();
 		settingsModel = loginView.getSettings();
-		if (settingsModel == null) {
+		if (settingsModel == null || serverSettingsModel == null) {
 			return;
 		}
 		
@@ -80,7 +80,7 @@ public class LoginController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			serverSettingsController.showServerSettingsView();;
+			serverSettingsController.showServerSettingsView();
 		}
 
 	}
