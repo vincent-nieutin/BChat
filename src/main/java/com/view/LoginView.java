@@ -23,7 +23,7 @@ public class LoginView extends DefaultView {
 
 	protected static int WINDOW_WIDTH = 400;
 	protected static int WINDOW_HEIGHT = 230;
-	private static String WINDOW_NAME = "Connection";
+	private static String WINDOW_NAME = "Chat connection";
 
 	private InputField usernameField;
 	private Button connectButton, settingsButton;

@@ -18,8 +18,6 @@ public class ChatView extends JFrame{
 	public ChatView() {
 		super("BChat");
 		
-		this.settingsModel = settingsModel;
-		
 		this.setSize(500, 500);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
