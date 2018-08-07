@@ -1,6 +1,7 @@
 package com.controller;
 
 import java.awt.event.*;
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,7 +27,8 @@ import com.view.ErrorView;
 public class ChatController {
 	
 	private static String HANDSHAKE = "FirstRequest:/";
-	private static String PATH_TO_AUDIO = "/ressources/audio/new_message_sound.wav";
+	private static String AUDIO_PATH = "/ressources/audio/";
+	private static String NEW_MESSAGE_AUDIO_FILE = "new_message_sound.wav";
 	
 	private PrintWriter outputStream;
 	private BufferedReader inputStream;
@@ -48,7 +50,9 @@ public class ChatController {
 		this.settingsModel = settingsModel;
 		try {
 			newMessageSound = AudioSystem.getClip();
-			audioInputStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream(PATH_TO_AUDIO));
+			InputStream audioSource = getClass().getResourceAsStream(AUDIO_PATH + NEW_MESSAGE_AUDIO_FILE);
+			InputStream bufferedInputStream = new BufferedInputStream(audioSource);
+			audioInputStream = AudioSystem.getAudioInputStream(bufferedInputStream);
 			newMessageSound.open(audioInputStream);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -91,7 +95,7 @@ public class ChatController {
 			break;
 		case "/exit":
 			disconnect();
-			chatView.dispose();
+			chatView.dispatchEvent(new WindowEvent(chatView, WindowEvent.WINDOW_CLOSING));
 			break;
 		case "":
 			break;
@@ -109,14 +113,14 @@ public class ChatController {
 	class NewMessageSound implements Runnable {
 		
 		public void run() {
-			newMessageSound.start();
-			try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(newMessageSound.isRunning()) {
+				newMessageSound.stop();
+				newMessageSound.setFramePosition(0);
+			}else if(!newMessageSound.isRunning()) {
+				newMessageSound.setFramePosition(0);
 			}
-			newMessageSound.setFramePosition(0);
+			
+			newMessageSound.start();
 		}
 	}
 	
@@ -133,8 +137,13 @@ public class ChatController {
 				try {
 					line = inputStream.readLine();
 					if(line != null) {
+						if(line.contains(username)) {
+							line = line.replace(username, "You");
+						}
+						
 						chatView.addToChat(line);
-						if(!line.startsWith(username))
+						
+						if(!line.startsWith(username) && !line.startsWith("You") )
 							playNewMessageSound();
 					}
 				}catch(SocketException e) {
