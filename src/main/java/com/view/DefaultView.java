@@ -14,8 +14,7 @@ public class DefaultView extends JFrame{
 		this.setSize(width,height);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
-		this.setLocationRelativeTo(null);
-		try {
+		/*try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -29,7 +28,7 @@ public class DefaultView extends JFrame{
 		} catch (UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		build();
 		this.setVisible(isVisible);
 	}

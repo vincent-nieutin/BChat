@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Base64;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -29,7 +30,7 @@ public class ChatController {
 	private static String NEW_MESSAGE_AUDIO_FILE = "new_message_sound.wav";
 	private static String USERNAME_PARAMETER = "username=";
 	private static String MESSAGE_PARAMETER = "message=";
-	private static String ID_PARAMETER = "id=";
+	private static String ID_PARAMETER = "uuid=";
 	private static String COLOR_PARAMETER = "color=";
 
 	private PrintWriter outputStream;
