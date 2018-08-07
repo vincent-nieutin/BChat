@@ -7,6 +7,7 @@ public class ResponseModel {
 	private String message;
 	private SimpleAttributeSet usernameAttributeSet;
 	private boolean isSeverMessage = false;
+	private int id;
 	
 	public String getUsername() {
 		return username;
@@ -31,5 +32,11 @@ public class ResponseModel {
 	}
 	public void setIsSeverMessage(boolean isSeverMessage) {
 		this.isSeverMessage = isSeverMessage;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 }

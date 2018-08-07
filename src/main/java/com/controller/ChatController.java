@@ -28,6 +28,7 @@ public class ChatController {
 	private static String NEW_MESSAGE_AUDIO_FILE = "new_message_sound.wav";
 	private static String USERNAME_PARAMETER = "username=";
 	private static String MESSAGE_PARAMETER = "message=";
+	private static String ID_PARAMETER = "id=";
 
 	private PrintWriter outputStream;
 	private BufferedReader inputStream;
@@ -35,9 +36,9 @@ public class ChatController {
 	private SettingsModel settingsModel;
 	private ChatView chatView;
 	private String username;
+	private int id;
 	private Clip newMessageSound;
 	private AudioInputStream audioInputStream;
-	//private ResponseModel responseModel;
 
 	private boolean running = true;
 
@@ -84,10 +85,6 @@ public class ChatController {
 		}
 	}
 
-	public void sendMessageFromController(String message) {
-		outputStream.println(message);
-	}
-
 	public void sendMessageFromInput() {
 		String inputText = chatView.getInputText();
 		switch (inputText) {
@@ -131,15 +128,28 @@ public class ChatController {
 		public void run() {
 			String line;
 			
+			while(true) {
+				try {
+					line = inputStream.readLine();
+					if(line.startsWith(HANDSHAKE)) {
+						//Log the handshake
+						System.out.println(line);
+						int idIndex = line.indexOf(ID_PARAMETER)+ID_PARAMETER.length();
+						int idCloserIndex = line.indexOf(";", idIndex);
+						id = Integer.parseInt(line.substring(idIndex,idCloserIndex));
+						break;
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
 			while (running) {
 				try {
 					line = inputStream.readLine();
 					System.out.println(line);
 					if (line != null) {
 						ResponseModel responseModel = new ResponseModel();
-						if (line.contains(username)) {
-							line = line.replace(username, "You");
-						}
 						
 						if(line.contains("SERVERMESSAGE;")) {
 							line = line.substring(line.indexOf("SERVERMESSAGE;")+"SERVERMESSAGE;".length());
@@ -158,10 +168,18 @@ public class ChatController {
 						int messageIndex = line.indexOf(MESSAGE_PARAMETER)+MESSAGE_PARAMETER.length();
 						int messageIndexCloserIndex = line.indexOf(";", messageIndex);
 						responseModel.setMessage(line.substring(messageIndex, messageIndexCloserIndex));
-						chatView.addUserMessageToChat(responseModel);
 						
-						if (!responseModel.getUsername().equals(username) && !responseModel.getUsername().equals("You"))
+						//Retrieve id
+						int idIndex = line.indexOf(ID_PARAMETER)+ID_PARAMETER.length();
+						int idIndexCloserIndex = line.indexOf(";", idIndex);
+						responseModel.setId(Integer.parseInt(line.substring(idIndex, idIndexCloserIndex)));
+						
+						if (responseModel.getId() != id) {
 							playNewMessageSound();
+						}else {
+							responseModel.setUsername("You");
+						}
+						chatView.addMessageToChat(responseModel);
 					}
 				} catch (SocketException e) {
 

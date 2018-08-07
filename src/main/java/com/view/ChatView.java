@@ -89,7 +89,7 @@ public class ChatView extends JFrame{
 		inputField.addKeyListener(enter);
 	}
 	
-	public void addUserMessageToChat(ResponseModel responseModel) {
+	public void addMessageToChat(ResponseModel responseModel) {
 		chat.addMessage(responseModel);
 	}
 	
