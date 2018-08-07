@@ -65,8 +65,9 @@ public class ChatController {
 	public void connect() {
 
 		chatView = new ChatView();
-		this.chatView.addSendButtonListener(new SendButtonListener());
-		this.chatView.addEnterKeyListener(new EnterListener());
+		chatView.addSendButtonListener(new SendButtonListener());
+		chatView.addEnterKeyListener(new EnterListener());
+		chatView.addExitButtonListener(new ExitButtonListener());
 		
 		// Handshake
 		outputStream.println(HANDSHAKE +"username="+settingsModel.getUsername()+";"+"color="+settingsModel.getTextColorAsString()+";");
@@ -83,6 +84,7 @@ public class ChatController {
 			System.out.println("Error while closing the connection.");
 			e.printStackTrace();
 		}
+		chatView.dispatchEvent(new WindowEvent(chatView, WindowEvent.WINDOW_CLOSING));
 	}
 
 	public void sendMessageFromInput() {
@@ -90,7 +92,6 @@ public class ChatController {
 		switch (inputText) {
 		case "/exit":
 			disconnect();
-			chatView.dispatchEvent(new WindowEvent(chatView, WindowEvent.WINDOW_CLOSING));
 			break;
 		case "":
 			break;
@@ -194,6 +195,13 @@ public class ChatController {
 
 		public void actionPerformed(ActionEvent e) {
 			sendMessageFromInput();
+		}
+	}
+	
+	class ExitButtonListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			disconnect();
 		}
 	}
 

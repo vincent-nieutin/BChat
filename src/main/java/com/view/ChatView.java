@@ -98,6 +98,10 @@ public class ChatView extends JFrame {
 	public void addSendButtonListener(ActionListener send) {
 		sendButton.addActionListener(send);
 	}
+	
+	public void addExitButtonListener(ActionListener send) {
+		exitButton.addActionListener(send);
+	}
 
 	public void addEnterKeyListener(KeyListener enter) {
 		inputField.addKeyListener(enter);
