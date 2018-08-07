@@ -188,7 +188,6 @@ public class ChatController {
 				}
 			}
 		}
-
 	}
 
 	class SendButtonListener implements ActionListener {

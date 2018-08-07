@@ -12,14 +12,14 @@ import javax.swing.text.StyledDocument;
 import com.model.ResponseModel;
 
 @SuppressWarnings("serial")
-public class TextArea extends JTextPane {
+public class TextPane extends JTextPane {
 	
 	private static String USERNAME_SEPARATOR = ">";
 	private static Color SERVER_MESSAGE_COLOR = Color.RED;
 	private static Color SYSTEM_COLOR = Color.BLACK;
 	private static Color SELF_COLOR = new Color(26, 26, 255);
 	
-	public TextArea() {
+	public TextPane() {
 		super();
 		this.setBorder(new EmptyBorder(0, 0, 0, 0));
 		this.setFont(new Font("Tahoma", 0, 14));
@@ -55,5 +55,6 @@ public class TextArea extends JTextPane {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		this.setCaretPosition(this.getDocument().getLength());
 	}
 }
