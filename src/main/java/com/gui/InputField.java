@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 import javax.swing.border.*;
 
@@ -12,13 +13,18 @@ import javax.swing.border.*;
 public class InputField extends JTextField{
 	
 	private static Color FOCUS_COLOR = new Color(64, 191, 64); 
+	private static int PADDING = 5;
 	
 	public InputField(String text){
 		super(text);
-		this.setBorder(new EmptyBorder(0,0,0,0));
+		this.setBorder(BorderFactory.createCompoundBorder(this.getBorder(), new EmptyBorder(0,PADDING,0,PADDING)));
 		this.setFont(new Font("Tahoma", 0, 14));
 		this.setHorizontalAlignment(JTextField.CENTER);
-		this.addFocusListener(new FieldFocusListener());
+		//this.addFocusListener(new FieldFocusListener());
+	}
+	
+	public InputField() {
+		this("");
 	}
 	
 	class FieldFocusListener implements FocusListener{
