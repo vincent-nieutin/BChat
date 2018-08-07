@@ -23,7 +23,7 @@ import com.view.ChatView;
 
 public class ChatController {
 
-	private static String HANDSHAKE = "FirstRequest:/";
+	private static String HANDSHAKE = "HANDSHAKE;";
 	private static String AUDIO_PATH = "/ressources/audio/";
 	private static String NEW_MESSAGE_AUDIO_FILE = "new_message_sound.wav";
 	private static String USERNAME_PARAMETER = "username=";
@@ -64,10 +64,11 @@ public class ChatController {
 	public void connect() {
 
 		chatView = new ChatView();
-		this.chatView.addSendListener(new SendButtonListener());
+		this.chatView.addSendButtonListener(new SendButtonListener());
 		this.chatView.addEnterKeyListener(new EnterListener());
-		// Perform handshake
-		outputStream.println(HANDSHAKE + settingsModel.getUsername());
+		
+		// Handshake
+		outputStream.println(HANDSHAKE +"username="+settingsModel.getUsername()+";"+"color="+settingsModel.getTextColorAsString()+";");
 		new WaitForInputThread().start();
 	}
 

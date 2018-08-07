@@ -10,6 +10,7 @@ import com.gui.InputField;
 import com.gui.TextArea;
 import com.model.ResponseModel;
 
+@SuppressWarnings("serial")
 public class ChatView extends JFrame{
 	
 	private static int WINDOW_WIDTH = 500;
@@ -80,7 +81,7 @@ public class ChatView extends JFrame{
 		inputField.requestFocus();
 	}
 	
-	public void addSendListener(ActionListener send) {
+	public void addSendButtonListener(ActionListener send) {
 		sendButton.addActionListener(send);
 	}
 	

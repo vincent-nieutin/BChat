@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.util.Random;
 
 import javax.swing.BoxLayout;
@@ -22,11 +23,11 @@ import com.model.SettingsModel;
 public class LoginView extends DefaultView {
 
 	protected static int WINDOW_WIDTH = 400;
-	protected static int WINDOW_HEIGHT = 230;
+	protected static int WINDOW_HEIGHT = 300;
 	private static String WINDOW_NAME = "Chat connection";
 
 	private InputField usernameField;
-	private Button connectButton, settingsButton;
+	private Button connectButton, settingsButton, colorButton;
 
 	private String username;
 
@@ -80,10 +81,18 @@ public class LoginView extends DefaultView {
 		usernameField = new InputField("");
 		usernameField.setPreferredSize(new Dimension(200, 25));
 		mainPanel.add(usernameField, gbc);
-
-		// Connect button
+		
+		//Color button
 		gbc.gridx = 0;
 		gbc.gridy = 3;
+		colorButton = new Button("Text color");
+		colorButton.setPreferredSize(new Dimension(119, 20));
+		colorButton.setFont(new Font("Tahoma", Font.CENTER_BASELINE, 11));
+		//mainPanel.add(colorButton, gbc);
+		
+		// Connect button
+		gbc.gridx = 0;
+		gbc.gridy = 4;
 		gbc.insets = new Insets(20, 0, 0, 0);
 		connectButton = new Button("Connect");
 		mainPanel.add(connectButton, gbc);
@@ -91,6 +100,8 @@ public class LoginView extends DefaultView {
 		contentPanel.add(mainPanel);
 
 		this.add(contentPanel);
+		
+		usernameField.requestFocus();
 	}
 
 	public SettingsModel getSettings() {
@@ -113,5 +124,9 @@ public class LoginView extends DefaultView {
 
 	public void addSettingsButtonListener(ActionListener settingsButtonListener) {
 		settingsButton.addActionListener(settingsButtonListener);
+	}
+	
+	public void addEnterKeyListener(KeyListener enter) {
+		usernameField.addKeyListener(enter);
 	}
 }
