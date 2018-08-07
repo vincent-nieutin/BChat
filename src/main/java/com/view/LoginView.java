@@ -23,7 +23,7 @@ import com.model.ConnectionModel;
 public class LoginView extends DefaultView {
 
 	protected static int WINDOW_WIDTH = 400;
-	protected static int WINDOW_HEIGHT = 300;
+	protected static int WINDOW_HEIGHT = 220;
 	private static String WINDOW_NAME = "Chat connection";
 	private static String SETTINGS_BUTTON_NAME = "Settings";
 
