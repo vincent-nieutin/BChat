@@ -1,5 +1,6 @@
 package com.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,30 +12,35 @@ import javax.swing.JSpinner;
 import javax.swing.border.EmptyBorder;
 
 import com.gui.Button;
+import com.gui.ColorChooser;
 import com.gui.InputField;
 import com.gui.InputSpinner;
 import com.gui.Label;
-import com.model.ServerSettingsModel;
+import com.model.SettingsModel;
 
 @SuppressWarnings("serial")
-public class ServerSettingsView extends DefaultView {
+public class SettingsView extends DefaultView {
 
 	protected static int WINDOW_WIDTH = 300;
-	protected static int WINDOW_HEIGHT = 200;
+	protected static int WINDOW_HEIGHT = 250;
 	private static String WINDOW_NAME = "Connection settings";
 
 	private InputField serverField;
 	private InputSpinner portField;
 	private Button okButton, cancelButton;
+	private ColorChooser colorChooser;
 
 	private String server = "localhost";
 	private int port = 6666;
+	private Color color = new Color(0, 255, 0);
 
-	public ServerSettingsView() {
+	public SettingsView(SettingsModel settingsModel) {
 		super(WINDOW_NAME, WINDOW_WIDTH, WINDOW_HEIGHT, false);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setServer(this.server);
-		setPort(this.port);
+		setServer(settingsModel.getServer());
+		setPort(settingsModel.getPort());
+		setColor(settingsModel.getColor());
+		System.out.println(settingsModel.getColor());
 	}
 
 	@Override
@@ -61,6 +67,7 @@ public class ServerSettingsView extends DefaultView {
 		mainPanel.add(serverField, gbc);
 
 		// Port label
+		gbc.insets = new Insets(10, 0, 0, 0);
 		gbc.fill = GridBagConstraints.VERTICAL;
 		gbc.gridx = 1;
 		gbc.gridy = 2;
@@ -68,6 +75,7 @@ public class ServerSettingsView extends DefaultView {
 		mainPanel.add(portLabel, gbc);
 
 		// Port field
+		gbc.insets = new Insets(0, 0, 0, 0);
 		gbc.gridx = 1;
 		gbc.gridy = 3;
 		portField = new InputSpinner(port, 0, 65535, 1);
@@ -75,27 +83,43 @@ public class ServerSettingsView extends DefaultView {
 		portField.setBorder(new EmptyBorder(0, 1, 0, 0));
 		portField.setPreferredSize(new Dimension(55, 25));
 		mainPanel.add(portField, gbc);
-		
+
+		// Color label
+		gbc.insets = new Insets(10, 0, 0, 0);
+		gbc.gridx = 1;
+		gbc.gridy = 4;
+		Label colorLabel = new Label("Text color");
+		mainPanel.add(colorLabel, gbc);
+
+		// Color chooser button
+		gbc.insets = new Insets(0, 0, 0, 0);
+		gbc.gridx = 1;
+		gbc.gridy = 5;
+		colorChooser = new ColorChooser("Color chooser");
+		colorChooser.setBackground(color);
+		mainPanel.add(colorChooser, gbc);
+
 		// Ok button
 		gbc.gridx = 0;
-		gbc.gridy = 4;
+		gbc.gridy = 6;
 		gbc.insets = new Insets(15, 1, 0, 1);
 		okButton = new Button("Ok");
 		mainPanel.add(okButton, gbc);
 
 		// Cancel button
 		gbc.gridx = 2;
-		gbc.gridy = 4;
+		gbc.gridy = 6;
 		cancelButton = new Button("Cancel");
 		mainPanel.add(cancelButton, gbc);
 
 		this.add(mainPanel);
 	}
-	
-	public ServerSettingsModel getServerSettings() {
-		ServerSettingsModel settingsModel = new ServerSettingsModel();
+
+	public SettingsModel getServerSettings() {
+		SettingsModel settingsModel = new SettingsModel();
 		settingsModel.setServer(getServer());
 		settingsModel.setPort(getPort());
+		settingsModel.setColor(getColor());
 		return settingsModel;
 	}
 
@@ -122,10 +146,19 @@ public class ServerSettingsView extends DefaultView {
 		return (Integer) portField.getValue();
 	}
 
+	public void setColor(Color color) {
+		this.color = color;
+		colorChooser.setBackground(color);
+	}
+
+	public Color getColor() {
+		return colorChooser.getBackground();
+	}
+
 	public void addOkButtonListener(ActionListener okButtonListener) {
 		okButton.addActionListener(okButtonListener);
 	}
-	
+
 	public void addCancelButtonListener(ActionListener cancelButtonListener) {
 		cancelButton.addActionListener(cancelButtonListener);
 	}

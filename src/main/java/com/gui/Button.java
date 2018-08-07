@@ -29,31 +29,33 @@ public class Button extends JButton {
 		this.setFont(new Font("Tahoma", Font.CENTER_BASELINE, 15));
 		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-		this.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		this.addMouseListener(new CustomMouseAdapter());
+	}
+	
+	public class CustomMouseAdapter extends MouseAdapter{
+		@Override
+		public void mouseClicked(MouseEvent e) {
 
-			}
+		}
 
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				setBackground(hoverColor);
-			}
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			setBackground(hoverColor);
+		}
 
-			@Override
-			public void mouseExited(MouseEvent e) {
-				setBackground(defaultColor);
-			}
+		@Override
+		public void mouseExited(MouseEvent e) {
+			setBackground(defaultColor);
+		}
 
-			@Override
-			public void mousePressed(MouseEvent e) {
-				setBackground(clickColor);
-			}
+		@Override
+		public void mousePressed(MouseEvent e) {
+			setBackground(clickColor);
+		}
 
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				setBackground(defaultColor);
-			}
-		});
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			setBackground(defaultColor);
+		}
 	}
 }

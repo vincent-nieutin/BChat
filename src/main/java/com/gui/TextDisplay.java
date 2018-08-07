@@ -5,6 +5,7 @@ import java.awt.Font;
 import javax.swing.*;
 import javax.swing.border.*;
 
+@SuppressWarnings("serial")
 public class TextDisplay extends JTextField {
 	
 	public TextDisplay(String text){

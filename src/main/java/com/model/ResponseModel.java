@@ -1,5 +1,7 @@
 package com.model;
 
+import java.awt.Color;
+
 import javax.swing.text.SimpleAttributeSet;
 
 public class ResponseModel {
@@ -8,6 +10,7 @@ public class ResponseModel {
 	private SimpleAttributeSet usernameAttributeSet;
 	private boolean isSeverMessage = false;
 	private int id;
+	private Color color;
 	
 	public String getUsername() {
 		return username;
@@ -38,5 +41,14 @@ public class ResponseModel {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public Color getColor() {
+		return color;
+	}
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	public void setSeverMessage(boolean isSeverMessage) {
+		this.isSeverMessage = isSeverMessage;
 	}
 }

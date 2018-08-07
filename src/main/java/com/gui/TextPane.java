@@ -16,8 +16,6 @@ public class TextPane extends JTextPane {
 	
 	private static String USERNAME_SEPARATOR = ">";
 	private static Color SERVER_MESSAGE_COLOR = Color.RED;
-	private static Color SYSTEM_COLOR = Color.BLACK;
-	private static Color SELF_COLOR = new Color(26, 26, 255);
 	
 	public TextPane() {
 		super();
@@ -39,8 +37,9 @@ public class TextPane extends JTextPane {
 				StyleConstants.setForeground(attributeSet, SERVER_MESSAGE_COLOR);
 			
 			//Display username
-			if(username.equals("You") && !responseModel.isSeverMessage()) {
-				StyleConstants.setForeground(attributeSet, SELF_COLOR);
+			if(!responseModel.isSeverMessage()) {
+				System.out.println("Color to use: " + responseModel.getColor());
+				StyleConstants.setForeground(attributeSet, responseModel.getColor());
 			}
 			
 			styledDocument.insertString(styledDocument.getLength(), username, attributeSet);

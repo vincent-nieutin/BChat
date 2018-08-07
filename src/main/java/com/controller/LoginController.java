@@ -12,16 +12,16 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import com.model.ServerSettingsModel;
 import com.model.SettingsModel;
+import com.model.ConnectionModel;
 import com.view.ErrorView;
 import com.view.LoginView;
 
 public class LoginController {
 	private LoginView loginView;
+	private ConnectionModel connectionModel;
+	private SettingsController settingsController;
 	private SettingsModel settingsModel;
-	private ServerSettingsController serverSettingsController;
-	private ServerSettingsModel serverSettingsModel;
 	private XmlFileController xmlFileController;
 	
 	private Socket clientSocket;
@@ -30,31 +30,33 @@ public class LoginController {
 	
 	public LoginController() {
 		xmlFileController = new XmlFileController();
-		settingsModel = xmlFileController.getSettings();
+		connectionModel = xmlFileController.getSettings();
 		
-		loginView = new LoginView(settingsModel.getUsername());
+		loginView = new LoginView(connectionModel.getUsername());
 		loginView.addConnectButtonListener(new ConnectButtonListener());
 		loginView.addSettingsButtonListener(new SettingsButtonListener());
 		loginView.addEnterKeyListener(new EnterListener());
 		
-		serverSettingsModel = new ServerSettingsModel();
-		serverSettingsModel.setServer(settingsModel.getServer());
-		serverSettingsModel.setPort(settingsModel.getPort());
-		serverSettingsController = new ServerSettingsController(serverSettingsModel);
+		settingsModel = new SettingsModel();
+		settingsModel.setServer(connectionModel.getServer());
+		settingsModel.setPort(connectionModel.getPort());
+		settingsModel.setColor(connectionModel.getColor());
+		settingsController = new SettingsController(settingsModel);
 	}
 	
 	public void startChat() {
-		serverSettingsModel = serverSettingsController.getServerSettings();
-		settingsModel = loginView.getSettings();
-		if (settingsModel == null || serverSettingsModel == null) {
+		settingsModel = settingsController.getServerSettings();
+		connectionModel = loginView.getSettings();
+		if (connectionModel == null || settingsModel == null) {
 			return;
 		}
 		
-		settingsModel.setServer(serverSettingsModel.getServer());
-		settingsModel.setPort(serverSettingsModel.getPort());
+		connectionModel.setServer(settingsModel.getServer());
+		connectionModel.setPort(settingsModel.getPort());
+		connectionModel.setColor(settingsModel.getColor());
 		
 		try {
-			clientSocket = new Socket(settingsModel.getServer(), settingsModel.getPort());
+			clientSocket = new Socket(connectionModel.getServer(), connectionModel.getPort());
 			outputStream = new PrintWriter(clientSocket.getOutputStream(), true);
 			inputStream = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		} catch (UnknownHostException e) {
@@ -70,8 +72,8 @@ public class LoginController {
 			new RuntimeException("IO exception", e);
 			return;
 		}
-		xmlFileController.saveSettings(settingsModel);
-		new ChatController(this.settingsModel, clientSocket, inputStream, outputStream);
+		xmlFileController.saveSettings(connectionModel);
+		new ChatController(this.connectionModel, clientSocket, inputStream, outputStream);
 		
 		loginView.setVisible(false);
 	}
@@ -89,7 +91,7 @@ public class LoginController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			serverSettingsController.showServerSettingsView();
+			settingsController.showServerSettingsView();
 		}
 
 	}

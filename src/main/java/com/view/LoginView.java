@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import com.gui.Button;
 import com.gui.InputField;
 import com.gui.Label;
-import com.model.SettingsModel;
+import com.model.ConnectionModel;
 
 @SuppressWarnings("serial")
 public class LoginView extends DefaultView {
@@ -25,15 +25,13 @@ public class LoginView extends DefaultView {
 	protected static int WINDOW_WIDTH = 400;
 	protected static int WINDOW_HEIGHT = 300;
 	private static String WINDOW_NAME = "Chat connection";
+	private static String SETTINGS_BUTTON_NAME = "Settings";
 
 	private InputField usernameField;
-	private Button connectButton, settingsButton, colorButton;
-
-	private String username;
+	private Button connectButton, settingsButton;
 
 	public LoginView(String username) {
 		super(WINDOW_NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
-		this.username = username;
 		if(username == null)
 			username = "Guest" + new Random().nextInt(99);
 		usernameField.setText(username);
@@ -52,8 +50,8 @@ public class LoginView extends DefaultView {
 		headerPanel.setBackground(new Color(0, 115, 230));
 
 		// Server settings button
-		settingsButton = new Button("Server settings");
-		settingsButton.setPreferredSize(new Dimension(119, 20));
+		settingsButton = new Button(SETTINGS_BUTTON_NAME);
+		settingsButton.setPreferredSize(new Dimension(79, 20));
 		settingsButton.setFont(new Font("Tahoma", Font.CENTER_BASELINE, 11));
 		headerPanel.add(settingsButton);
 
@@ -82,14 +80,6 @@ public class LoginView extends DefaultView {
 		usernameField.setPreferredSize(new Dimension(200, 25));
 		mainPanel.add(usernameField, gbc);
 		
-		//Color button
-		gbc.gridx = 0;
-		gbc.gridy = 3;
-		colorButton = new Button("Text color");
-		colorButton.setPreferredSize(new Dimension(119, 20));
-		colorButton.setFont(new Font("Tahoma", Font.CENTER_BASELINE, 11));
-		//mainPanel.add(colorButton, gbc);
-		
 		// Connect button
 		gbc.gridx = 0;
 		gbc.gridy = 4;
@@ -104,8 +94,8 @@ public class LoginView extends DefaultView {
 		usernameField.requestFocus();
 	}
 
-	public SettingsModel getSettings() {
-		SettingsModel settingsModel = new SettingsModel();
+	public ConnectionModel getSettings() {
+		ConnectionModel settingsModel = new ConnectionModel();
 
 		String username = usernameField.getText();
 

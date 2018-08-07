@@ -1,5 +1,6 @@
 package com.controller;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -18,7 +19,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 import com.model.ResponseModel;
-import com.model.SettingsModel;
+import com.model.ConnectionModel;
 import com.view.ChatView;
 
 public class ChatController {
@@ -29,26 +30,25 @@ public class ChatController {
 	private static String USERNAME_PARAMETER = "username=";
 	private static String MESSAGE_PARAMETER = "message=";
 	private static String ID_PARAMETER = "id=";
+	private static String COLOR_PARAMETER = "color=";
 
 	private PrintWriter outputStream;
 	private BufferedReader inputStream;
 	private Socket clientSocket;
-	private SettingsModel settingsModel;
+	private ConnectionModel settingsModel;
 	private ChatView chatView;
-	private String username;
 	private int id;
 	private Clip newMessageSound;
 	private AudioInputStream audioInputStream;
 
 	private boolean running = true;
 
-	public ChatController(SettingsModel settingsModel, Socket clientSocket, BufferedReader inputStream,
+	public ChatController(ConnectionModel settingsModel, Socket clientSocket, BufferedReader inputStream,
 			PrintWriter outputStream) {
 		// Setup
 		this.clientSocket = clientSocket;
 		this.inputStream = inputStream;
 		this.outputStream = outputStream;
-		this.username = settingsModel.getUsername();
 		this.settingsModel = settingsModel;
 		try {
 			newMessageSound = AudioSystem.getClip();
@@ -70,7 +70,7 @@ public class ChatController {
 		chatView.addExitButtonListener(new ExitButtonListener());
 		
 		// Handshake
-		outputStream.println(HANDSHAKE +"username="+settingsModel.getUsername()+";"+"color="+settingsModel.getTextColorAsString()+";");
+		outputStream.println(HANDSHAKE +"username="+settingsModel.getUsername()+";"+"color="+settingsModel.getColorAsString()+";");
 		new WaitForInputThread().start();
 	}
 
@@ -153,7 +153,7 @@ public class ChatController {
 						ResponseModel responseModel = new ResponseModel();
 						
 						if(line.contains("SERVERMESSAGE;")) {
-							line = line.substring(line.indexOf("SERVERMESSAGE;")+"SERVERMESSAGE;".length());
+							//line = line.substring(line.indexOf("SERVERMESSAGE;")+"SERVERMESSAGE;".length());
 							responseModel.setIsSeverMessage(true);
 						}
 
@@ -174,6 +174,29 @@ public class ChatController {
 						int idIndex = line.indexOf(ID_PARAMETER)+ID_PARAMETER.length();
 						int idIndexCloserIndex = line.indexOf(";", idIndex);
 						responseModel.setId(Integer.parseInt(line.substring(idIndex, idIndexCloserIndex)));
+						
+						//Retrieve color
+						int colorIndex = line.indexOf(COLOR_PARAMETER)+COLOR_PARAMETER.length();
+						int colorCloserIndex = line.indexOf(";", colorIndex);
+						String rgbColor = line.substring(colorIndex,colorCloserIndex);
+						
+						System.out.println("rgb color: "+rgbColor);
+						
+						//Get r
+						int rIndex = rgbColor.indexOf("r=") + "r=".length();
+						int rCloserIndex = rgbColor.indexOf(",", rIndex);
+						int r = Integer.parseInt(rgbColor.substring(rIndex,rCloserIndex));
+						
+						//Get g
+						int gIndex = rgbColor.indexOf("g=") + "g=".length();
+						int gCloserIndex = rgbColor.indexOf(",", gIndex);
+						int g = Integer.parseInt(rgbColor.substring(gIndex,gCloserIndex));
+						
+						//Get b
+						int bIndex = rgbColor.indexOf("b=") + "b=".length();
+						int bCloserIndex = rgbColor.indexOf("]", bIndex);
+						int b = Integer.parseInt(rgbColor.substring(bIndex,bCloserIndex));
+						responseModel.setColor(new Color(r,g,b));
 						
 						if (responseModel.getId() != id) {
 							playNewMessageSound();

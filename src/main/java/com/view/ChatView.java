@@ -30,12 +30,11 @@ public class ChatView extends JFrame {
 
 	private TextPane chat;
 	private InputField inputField;
-	private Button exitButton, usersButton, sendButton;
+	private Button exitButton, usersButton, sendButton, shareFileButton;
 	private XmlFileController settingsModel;
 
 	public ChatView() {
 		super("BChat");
-
 		this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -47,9 +46,13 @@ public class ChatView extends JFrame {
 		headerPanel.setLayout(new FlowLayout(FlowLayout.TRAILING));
 		headerPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, HEADER_PANEL_HEIGHT));
 		headerPanel.setBackground(new Color(0, 115, 230));
-
+		
+		shareFileButton = new Button("Share file");
+		shareFileButton.setPreferredSize(new Dimension(110,40));
+		//headerPanel.add(shareFileButton);
+		
 		usersButton = new Button("Users");
-		headerPanel.add(usersButton);
+		//headerPanel.add(usersButton);
 
 		exitButton = new Button("Exit");
 		headerPanel.add(exitButton);
