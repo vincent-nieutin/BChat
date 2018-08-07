@@ -46,12 +46,12 @@ public class LoginView extends DefaultView {
 		// Banner panel
 		JPanel headerPanel = new JPanel();
 		headerPanel.setLayout(new FlowLayout(FlowLayout.TRAILING));
-		headerPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, 30));
+		//headerPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, 30));
 		headerPanel.setBackground(new Color(0, 115, 230));
 
 		// Server settings button
 		settingsButton = new Button(SETTINGS_BUTTON_NAME);
-		settingsButton.setPreferredSize(new Dimension(79, 20));
+		//settingsButton.setPreferredSize(new Dimension(90, 20));
 		settingsButton.setFont(new Font("Tahoma", Font.CENTER_BASELINE, 11));
 		headerPanel.add(settingsButton);
 

@@ -7,12 +7,14 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
 @SuppressWarnings("serial")
 public class Button extends JButton {
 	private static int BUTTON_WIDTH = 100;
 	private static int BUTTON_HEIGTH = 40;
+	private static int PADDING = 6;
 	
 	private Color defaultColor = new Color(0, 115, 230);
 	private Color hoverColor = new Color(0, 115, 180);
@@ -23,7 +25,9 @@ public class Button extends JButton {
 		this.setContentAreaFilled(false);
 		this.setFocusPainted(false);
 		this.setOpaque(true);
-		this.setPreferredSize(new Dimension(BUTTON_WIDTH,BUTTON_HEIGTH));
+		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(),BorderFactory.createEmptyBorder(PADDING,PADDING,PADDING,PADDING)));
+		
+		//this.setPreferredSize(new Dimension(BUTTON_WIDTH,BUTTON_HEIGTH));
 		this.setBackground(defaultColor);
 		this.setForeground(Color.WHITE);
 		this.setFont(new Font("Tahoma", Font.CENTER_BASELINE, 15));
